@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml", xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор</title>
+</head>
+<body>
+<div>
+    <h1>Администратор</h1>
+    <table border="1">
+        <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Roles</th>
+        </tr>
+<tr th:each="c : ${allUsers}">
+    <td th:text="${c.id}"></td>
+    <td th:text="${c.username}"></td>
+    <td th:text="${c.password}"></td>
+    <td th:text="${c.roles}"></td>
+    <td><a th:href="@{/admin/{id}/delete(id=${c.id})}">Удалить</a> </td>
+</tr>
+
+    </table>
+</div>
+<a th:href="@{/logout}">Выход</a>
+</body>
+</html>
