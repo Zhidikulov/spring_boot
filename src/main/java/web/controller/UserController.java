@@ -1,5 +1,6 @@
 package web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +14,13 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService){
+        this.userService = userService;
+    }
+
 
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -31,7 +37,7 @@ public class UserController {
     public String registration(@ModelAttribute("username") String username,
                                @ModelAttribute("password") String password,
                                User user) {
-        user.setName(username);
+        user.setUsername(username);
         user.setPassword(password);
         userService.add(user);
         return "registration";

@@ -1,5 +1,7 @@
 package web.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,12 +17,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService, UserService {
-    @Autowired
-    private UserDao userDao;
 
-    @Autowired
-    PasswordEncoder crypt;
+    private final UserDao userDao;
+
+    private final PasswordEncoder crypt;
 
 
     // «Пользователь» – это просто Object. В большинстве случаев он может быть
@@ -41,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     @Transactional(readOnly = true)
     @Override
     public List<User> allUsers(){
-        return userDao.allUsers();
+        return userDao.findAll();
     }
 
     @Transactional
@@ -49,7 +51,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public void add(User user){
         user.setRoles(Collections.singleton(new Role("ROLE_USER")));
         user.setPassword(crypt.encode(user.getPassword()));
-        userDao.add(user);
+        userDao.save(user);
 
 
     }
@@ -57,14 +59,14 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     @Transactional
     @Override
     public void delete(Long id){
-        userDao.delete(id);
+        userDao.deleteById(id);
     }
 
-    @Transactional
-    @Override
-    public void edit(User user){
-        userDao.edit(user);
-    }
+//    @Transactional
+//    @Override
+//    public void edit(User user){
+//        userDao.;
+//    }
 
     @Transactional
     @Override
